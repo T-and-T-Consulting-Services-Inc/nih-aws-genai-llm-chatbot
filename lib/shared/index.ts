@@ -58,10 +58,10 @@ export class Shared extends Construct {
             name: "private",
             subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
           },
-          {
-            name: "isolated",
-            subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
-          },
+          // {
+          //   name: "isolated",
+          //   subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+          // },
         ],
       });
       const logGroup = new logs.LogGroup(this, "FLowLogsLogGroup", {
