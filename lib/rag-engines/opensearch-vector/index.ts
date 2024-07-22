@@ -48,7 +48,7 @@ export class OpenSearchVector extends Construct {
       // Make sure the subnets are not in the same availability zone.
       subnetIds: props.shared.vpc.selectSubnets({
         onePerAz: true,
-        subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
       }).subnetIds,
       vpcId: props.shared.vpc.vpcId,
       securityGroupIds: [sg.securityGroupId],
