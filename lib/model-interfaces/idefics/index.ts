@@ -1,7 +1,7 @@
 import * as cdk from "aws-cdk-lib";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
-import * as ec2 from "aws-cdk-lib/aws-ec2";
+// import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as lambdaEventSources from "aws-cdk-lib/aws-lambda-event-sources";
@@ -38,24 +38,26 @@ export class IdeficsInterface extends Construct {
     // Create a private API to serve images and other files from S3
     // in order to avoid using signed URLs and run out of input tokens
     // with the idefics model
-    const defaultSecurityGroup = (props.config.vpc?.vpcId && props.config.vpc.vpcDefaultSecurityGroup) ?
-        props.config.vpc.vpcDefaultSecurityGroup : props.shared.vpc.vpcDefaultSecurityGroup;
+    // const defaultSecurityGroup =
+    //   props.config.vpc?.vpcId && props.config.vpc.vpcDefaultSecurityGroup
+    //     ? props.config.vpc.vpcDefaultSecurityGroup
+    //     : props.shared.vpc.vpcDefaultSecurityGroup;
 
-    const vpcDefaultSecurityGroup = defaultSecurityGroup ? ec2.SecurityGroup.fromSecurityGroupId(
-        this,
-        'VPCDefaultSecurityGroup',
-        defaultSecurityGroup
-    ) : ec2.SecurityGroup.fromLookupByName(this, 'VPCDefaultSecurityGroup', 'default', props.shared.vpc);
+    // const vpcDefaultSecurityGroup = defaultSecurityGroup ? ec2.SecurityGroup.fromSecurityGroupId(
+    //     this,
+    //     'VPCDefaultSecurityGroup',
+    //     defaultSecurityGroup
+    // ) : ec2.SecurityGroup.fromLookupByName(this, 'VPCDefaultSecurityGroup', 'default', props.shared.vpc);
 
-    const vpcEndpoint = props.shared.vpc.addInterfaceEndpoint(
-      "PrivateApiEndpoint",
-      {
-        service: ec2.InterfaceVpcEndpointAwsService.APIGATEWAY,
-        privateDnsEnabled: true,
-        open: true,
-        securityGroups: [vpcDefaultSecurityGroup],
-      }
-    );
+    // const vpcEndpoint = props.shared.vpc.addInterfaceEndpoint(
+    //   "PrivateApiEndpoint",
+    //   {
+    //     service: ec2.InterfaceVpcEndpointAwsService.APIGATEWAY,
+    //     privateDnsEnabled: true,
+    //     open: true,
+    //     securityGroups: [vpcDefaultSecurityGroup],
+    //   }
+    // );
 
     const logGroup = new logs.LogGroup(
       this,
@@ -78,7 +80,7 @@ export class IdeficsInterface extends Construct {
       binaryMediaTypes: ["*/*"],
       endpointConfiguration: {
         types: [apigateway.EndpointType.PRIVATE],
-        vpcEndpoints: [vpcEndpoint],
+        // vpcEndpoints: [vpcEndpoint],
       },
       policy: new iam.PolicyDocument({
         statements: [
@@ -93,11 +95,11 @@ export class IdeficsInterface extends Construct {
             effect: iam.Effect.DENY,
             resources: ["execute-api:/*/*/*"],
             principals: [new iam.AnyPrincipal()],
-            conditions: {
-              StringNotEquals: {
-                "aws:SourceVpce": vpcEndpoint.vpcEndpointId,
-              },
-            },
+            // conditions: {
+            //   StringNotEquals: {
+            //     "aws:SourceVpce": vpcEndpoint.vpcEndpointId,
+            //   },
+            // },
           }),
         ],
       }),
