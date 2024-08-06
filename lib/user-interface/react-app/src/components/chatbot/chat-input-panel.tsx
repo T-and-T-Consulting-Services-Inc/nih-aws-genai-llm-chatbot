@@ -221,7 +221,21 @@ export default function ChatInputPanel(props: ChatInputPanelProps) {
           modelsResult = await apiClient.models.getModels();
         }
 
-        const models = modelsResult.data ? modelsResult.data.listModels : [];
+        // Claude 3.5 Sonnet
+        // Llama 3 70B Instruct
+        // Mistral 7B Instruct
+
+        const availableModels = [
+          "",
+          "anthropic.claude-3-5-sonnet-20240620-v1:0",
+          "meta.llama3-1-70b-instruct-v1:0",
+          "mistral.mistral-7b-instruct-v0:2",
+        ];
+        const models = modelsResult.data
+          ? modelsResult.data.listModels.filter((model: Model) => {
+              return availableModels.includes(model.name);
+            })
+          : [];
 
         const selectedModelOption = getSelectedModelOption(models);
         const selectedModelMetadata = getSelectedModelMetadata(

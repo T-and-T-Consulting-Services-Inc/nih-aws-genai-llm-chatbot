@@ -135,12 +135,22 @@ export default function MultiChat() {
           modelsResult = await apiClient.models.getModels();
         }
 
+        const availableModels = [
+          "",
+          "anthropic.claude-3-5-sonnet-20240620-v1:0",
+          "meta.llama3-1-70b-instruct-v1:0",
+          "mistral.mistral-7b-instruct-v0:2",
+        ];
         const models = modelsResult.data
-          ? modelsResult.data.listModels.filter(
-              (m: any) =>
-                m.inputModalities.includes(ChabotInputModality.Text) &&
-                m.outputModalities.includes(ChabotOutputModality.Text)
-            )
+          ? modelsResult.data.listModels
+              .filter(
+                (m: any) =>
+                  m.inputModalities.includes(ChabotInputModality.Text) &&
+                  m.outputModalities.includes(ChabotOutputModality.Text)
+              )
+              .filter((model: Model) => {
+                return availableModels.includes(model.name);
+              })
           : [];
         setModels(models);
         setWorkspaces(workspaces);
@@ -330,13 +340,21 @@ export default function MultiChat() {
     [ReadyState.UNINSTANTIATED]: "Uninstantiated",
   }[readyState];
 
-  const handleFeedback = (feedbackType: 1 | 0, idx: number, message: ChatBotHistoryItem, messageHistory: ChatBotHistoryItem[]) => {
+  const handleFeedback = (
+    feedbackType: 1 | 0,
+    idx: number,
+    message: ChatBotHistoryItem,
+    messageHistory: ChatBotHistoryItem[]
+  ) => {
     console.log("Message history: ", messageHistory);
     // metadata.prompts[0][0]
     if (message.metadata.sessionId) {
       let prompt = "";
-      if (Array.isArray(message.metadata.prompts) && Array.isArray(message.metadata.prompts[0])) { 
-          prompt = message.metadata.prompts[0][0];
+      if (
+        Array.isArray(message.metadata.prompts) &&
+        Array.isArray(message.metadata.prompts[0])
+      ) {
+        prompt = message.metadata.prompts[0][0];
       }
       const completion = message.content;
       const model = message.metadata.modelId;
@@ -346,7 +364,7 @@ export default function MultiChat() {
         feedback: feedbackType,
         prompt: prompt,
         completion: completion,
-        model: model as string
+        model: model as string,
       };
       addUserFeedback(feedbackData);
     }
@@ -356,7 +374,7 @@ export default function MultiChat() {
     if (!appContext) return;
 
     const apiClient = new ApiClient(appContext);
-    await apiClient.userFeedback.addUserFeedback({feedbackData});
+    await apiClient.userFeedback.addUserFeedback({ feedbackData });
   };
 
   return (

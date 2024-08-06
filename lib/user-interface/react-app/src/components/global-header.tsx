@@ -8,6 +8,7 @@ import { StorageHelper } from "../common/helpers/storage-helper";
 import { Auth } from "aws-amplify";
 import useOnFollow from "../common/hooks/use-on-follow";
 import { CHATBOT_NAME } from "../common/constants";
+import styles from "./global-header.module.scss";
 
 export default function GlobalHeader() {
   const onFollow = useOnFollow();
@@ -50,6 +51,7 @@ export default function GlobalHeader() {
     <div
       style={{ zIndex: 1002, top: 0, left: 0, right: 0, position: "fixed" }}
       id="awsui-top-navigation"
+      className={styles.header}
     >
       <TopNavigation
         identity={{
@@ -62,13 +64,13 @@ export default function GlobalHeader() {
             text: theme === Mode.Dark ? "Light Mode" : "Dark Mode",
             onClick: onChangeThemeClick,
           },
-          {
-            type: "button",
-            text: "GitHub",
-            href: "https://github.com/aws-samples/aws-genai-llm-chatbot",
-            external: true,
-            externalIconAriaLabel: " (opens in a new tab)",
-          },
+          // {
+          //   type: "button",
+          //   text: "GitHub",
+          //   href: "https://github.com/aws-samples/aws-genai-llm-chatbot",
+          //   external: true,
+          //   externalIconAriaLabel: " (opens in a new tab)",
+          // },
           {
             type: "menu-dropdown",
             description: userName ?? "",

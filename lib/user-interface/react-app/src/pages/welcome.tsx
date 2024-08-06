@@ -1,55 +1,57 @@
 import {
   ContentLayout,
-  Header,
-  Cards,
-  Container,
-  SpaceBetween,
-  Link,
-  BreadcrumbGroup,
+  // Header,
+  // Cards,
+  // Container,
+  // SpaceBetween,
+  // Link,
+  // BreadcrumbGroup,
 } from "@cloudscape-design/components";
 import BaseAppLayout from "../components/base-app-layout";
-import RouterButton from "../components/wrappers/router-button";
-import useOnFollow from "../common/hooks/use-on-follow";
-import { CHATBOT_NAME } from "../common/constants";
+// import RouterButton from "../components/wrappers/router-button";
+// import useOnFollow from "../common/hooks/use-on-follow";
+// import { CHATBOT_NAME } from "../common/constants";
+import styles from "./welcome.module.scss";
+import { Link } from "react-router-dom";
 
 export default function Welcome() {
-  const onFollow = useOnFollow();
+  // const onFollow = useOnFollow();
 
   return (
     <BaseAppLayout
-      breadcrumbs={
-        <BreadcrumbGroup
-          onFollow={onFollow}
-          items={[
-            {
-              text: CHATBOT_NAME,
-              href: "/",
-            },
-          ]}
-        />
-      }
+      // breadcrumbs={
+      //   <BreadcrumbGroup
+      //     onFollow={onFollow}
+      //     items={[
+      //       {
+      //         text: CHATBOT_NAME,
+      //         href: "/",
+      //       },
+      //     ]}
+      //   />
+      // }
       content={
         <ContentLayout
-          header={
-            <Header
-              variant="h1"
-              description="An opensource, modular and comprehensive solution to deploy a multi-model and multi-RAG powered chatbot using AWS CDK on AWS."
-              actions={
-                <RouterButton
-                  iconAlign="right"
-                  iconName="contact"
-                  variant="primary"
-                  href="/chatbot/playground"
-                >
-                  Getting Started
-                </RouterButton>
-              }
-            >
-              Chatbot Home
-            </Header>
-          }
+        // header={
+        //   <Header
+        //     // variant="h1"
+        //     // description="An opensource, modular and comprehensive solution to deploy a multi-model and multi-RAG powered chatbot using AWS CDK on AWS."
+        //     // actions={
+        //     //   <RouterButton
+        //     //     iconAlign="right"
+        //     //     iconName="contact"
+        //     //     variant="primary"
+        //     //     href="/chatbot/playground"
+        //     //   >
+        //     //     Getting Started
+        //     //   </RouterButton>
+        //     // }
+        //   >
+
+        //   </Header>
+        // }
         >
-          <SpaceBetween size="l">
+          {/* <SpaceBetween size="l">
             <Cards
               cardDefinition={{
                 header: (item) => (
@@ -224,7 +226,16 @@ export default function Welcome() {
                 },
               ]}
             />
-          </SpaceBetween>
+          </SpaceBetween> */}
+          <div className={styles.welcome}>
+            <h1>Landing Page, Guide, and Help Videos</h1>
+            <div className={styles.links}>
+              <Link to="/chatbot/playground">Chat Playground</Link>
+              <Link className={styles.red} to="/chatbot/multichat">
+                Multi-chat Playground
+              </Link>
+            </div>
+          </div>
         </ContentLayout>
       }
     ></BaseAppLayout>
