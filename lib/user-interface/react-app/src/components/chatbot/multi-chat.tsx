@@ -138,7 +138,7 @@ export default function MultiChat() {
         const availableModels = [
           "",
           "anthropic.claude-3-5-sonnet-20240620-v1:0",
-          "meta.llama3-1-70b-instruct-v1:0",
+          "meta.llama3-70b-instruct-v1:0",
           "mistral.mistral-7b-instruct-v0:2",
         ];
         const models = modelsResult.data
